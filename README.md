@@ -1,11 +1,11 @@
-c# SweeTech IoT (Ionic + MQTT)
+# SweeTech IoT (Ionic + MQTT)
 
-App mobile de controle de um ESP32 por MQTT: mostra a temperatura em tempo
-real, liga e desliga o LED e envia qualquer texto digitado para o display.
+App mobile de controle de um ESP32 por MQTT: mostra a temperatura em
+tempo real, liga e desliga o LED e envia qualquer texto digitado para o display.
 
 ## Tecnologias
 - **Ionic Core 8** (web components, carregado via CDN) + HTML, CSS e JavaScript (módulos ES6)
-- **Biblioteca MQTT:** mqtt.js 5.10.1 (MQTT sobre WebSocket, carregada via CDN)
+- **Biblioteca MQTT:** mqtt.js 5.10.1 (MQTT sobre WebSocket seguro, carregada via CDN)
 - **Broker:** EMQX Cloud (configurável; também funciona com outros brokers)
 - **Equipamento:** ESP32 com sensor de temperatura, LED e display LCD I2C
 - **ESP32:** biblioteca PubSubClient (Arduino)
@@ -27,6 +27,11 @@ de **Configurações**, sem mexer no código.
 
 > Precisa abrir por servidor (http://localhost). Abrir o arquivo direto
 > (file://) não carrega os módulos JS.
+> O app carrega o Ionic e o mqtt.js por CDN, então precisa de internet.
+
+## App no celular
+O app foi empacotado como APK Android e instalado no celular, onde foi
+testado com o ESP32 real.
 
 ## Segurança
 A senha do broker **não está no código**. Ela é digitada na tela de
@@ -47,7 +52,5 @@ js/views/           uma pasta por tela: control, settings, brokers
 ```
 
 ## Próximos passos
-- Gerar o APK Android com Capacitor.
-- No APK, guardar a senha em armazenamento seguro (plugin do Capacitor)
-  em vez do `localStorage`.
+- Guardar a senha em armazenamento seguro do Android em vez do `localStorage`.
 - Confirmar as portas WebSocket dos brokers públicos em `js/config.js`.
