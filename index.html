@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
+<title>SweeTech Control</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/ionic.bundle.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core@8/css/palettes/dark.system.css">
+<link rel="stylesheet" href="css/styles.css">
+<script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core@8/dist/ionic/ionic.esm.js"></script>
+<!-- mqtt.js (global "mqtt"). Se não carregar, troque por outra versão 5.x -->
+<script src="https://cdn.jsdelivr.net/npm/mqtt@5.10.1/dist/mqtt.min.js"></script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<ion-app>
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>SweeTech Control</ion-title>
+      <ion-note slot="end" id="st" style="padding-right:12px">desconectado</ion-note>
+    </ion-toolbar>
+    <ion-toolbar>
+      <ion-segment id="seg" value="v1">
+        <ion-segment-button value="v1"><ion-label>Controle</ion-label></ion-segment-button>
+        <ion-segment-button value="v2"><ion-label>Configurações</ion-label></ion-segment-button>
+        <ion-segment-button value="v3"><ion-label>Brokers</ion-label></ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="ion-padding">
+
+    <section id="v1">
+      <div class="card">
+        <div class="muted">Temperatura da sala</div>
+        <div class="big" id="temp">--</div>
+        <small class="t" id="tt">aguardando leitura</small>
+      </div>
+      <div id="log"></div>
+      <ion-button expand="block" fill="outline" id="btemp">Pedir temperatura</ion-button>
+      <div class="sendrow">
+        <ion-input id="msg" fill="outline" placeholder="on, off ou um texto"></ion-input>
+        <ion-button id="bsend">Enviar</ion-button>
+      </div>
+      <p class="err" id="err"></p>
+    </section>
+
+    <section id="v2" hidden>
+      <ion-input id="f-h" label="Host do broker" label-placement="stacked" fill="outline" placeholder="exemplo.emqxsl.com"></ion-input>
+      <div class="two">
+        <ion-input id="f-p" label="Porta WebSocket" label-placement="stacked" fill="outline" inputmode="numeric"></ion-input>
+        <ion-input id="f-pa" label="Caminho" label-placement="stacked" fill="outline"></ion-input>
+      </div>
+      <ion-toggle id="f-tls" checked>Usar TLS (wss)</ion-toggle>
+      <div class="two gap">
+        <ion-input id="f-u" label="Usuário" label-placement="stacked" fill="outline"></ion-input>
+        <ion-input id="f-w" label="Senha" label-placement="stacked" fill="outline" type="password"></ion-input>
+      </div>
+      <h3>Tópicos</h3>
+      <ion-input id="f-temp" label="Temperatura" label-placement="stacked" fill="outline"></ion-input>
+      <ion-input id="f-led" label="LED" label-placement="stacked" fill="outline"></ion-input>
+      <ion-input id="f-disp" label="Display" label-placement="stacked" fill="outline"></ion-input>
+      <div class="acts">
+        <ion-button id="fsave">Salvar e conectar</ion-button>
+        <ion-button id="freset" fill="outline">Restaurar padrão</ion-button>
+      </div>
+      <p class="err" id="ferr"></p>
+    </section>
+
+    <section id="v3" hidden>
+      <ion-input id="bq" label="Buscar broker público" label-placement="stacked" fill="outline" placeholder="emqx, hivemq, mosquitto"></ion-input>
+      <div id="bpub"></div>
+
+      <h3>Outro broker (público ou privado)</h3>
+      <ion-input id="b-n" label="Nome (opcional)" label-placement="stacked" fill="outline"></ion-input>
+      <ion-input id="b-h" label="Host" label-placement="stacked" fill="outline" placeholder="exemplo.emqxsl.com"></ion-input>
+      <div class="two">
+        <ion-input id="b-p" label="Porta WebSocket" label-placement="stacked" fill="outline" inputmode="numeric"></ion-input>
+        <ion-input id="b-pa" label="Caminho" label-placement="stacked" fill="outline" value="/mqtt"></ion-input>
+      </div>
+      <ion-toggle id="b-tls" checked>Usar TLS (wss)</ion-toggle>
+      <div class="two gap">
+        <ion-input id="b-u" label="Usuário (se privado)" label-placement="stacked" fill="outline"></ion-input>
+        <ion-input id="b-w" label="Senha" label-placement="stacked" fill="outline" type="password"></ion-input>
+      </div>
+      <ion-checkbox id="b-r">Lembrar senha neste aparelho</ion-checkbox>
+      <div class="acts">
+        <ion-button id="bsave">Salvar broker</ion-button>
+        <ion-button id="btest" fill="outline">Testar conexão</ion-button>
+      </div>
+      <p class="err" id="bmsg"></p>
+
+      <h3>Brokers salvos</h3>
+      <div id="bsav"></div>
+      <div class="warn">Brokers públicos não têm senha: qualquer pessoa pode ler e publicar nos mesmos tópicos.</div>
+    </section>
+
+  </ion-content>
+</ion-app>
+</body>
+</html>
